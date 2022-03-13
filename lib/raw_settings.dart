@@ -2,14 +2,13 @@ library raw_settings;
 
 import 'dart:io';
 import 'dart:convert';
-import 'package:meta/meta.dart';
 
 ///Holds all of the library methods and variables
 class RawSettings {
   ///Hold the app name
-  String _settingsPath;
+  late final String _settingsPath;
   ///Holds the loaded settings from  the app folder
-  Map<String,dynamic> _settings;
+  Map<String,dynamic>? _settings;
   ///Loads the data into the class
   RawSettings(String appName){
     //Prevent the use of backslashes or slashes in the appname to prevent errors with the file system path
@@ -18,7 +17,7 @@ class RawSettings {
     //Get the temporary directory
     Directory appTemporaryDirectory = Directory.systemTemp;
     //Define the Settings
-    _settingsPath = "${appTemporaryDirectory.path}/$appName/settings.json";
+    this._settingsPath = "${appTemporaryDirectory.path}/$appName/settings.json";
     //Read the file contents
     String json;
     //Prevent errors
@@ -38,11 +37,11 @@ class RawSettings {
   }
   ///Set a value
   void set({
-    @required String name,
-    @required dynamic value,
+    required String name,
+    required dynamic value,
   }){
     //Add to the loaded settings
-    _settings.addAll({
+    _settings!.addAll({
       name : value,
     });
     //Convert settigs to json
@@ -57,8 +56,8 @@ class RawSettings {
   }
   ///Returns the value of the property name that you specify
   dynamic get({
-    @required String name,
+    required String name,
   }){
-    return _settings[name];
+    return _settings![name];
   }
 }
